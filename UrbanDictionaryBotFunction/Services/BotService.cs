@@ -2,6 +2,7 @@
 using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using UrbanDictionaryBotFunction.Commands;
 
 namespace UrbanDictionaryBotFunction.Services
@@ -57,10 +58,12 @@ namespace UrbanDictionaryBotFunction.Services
             }
             else
             {
-                text = term.Meaning + term.Example;
+                text = $"*{term.Word}* by {term.Author} \n\n" 
+                    + $"*Meaning:*\n {term.Meaning} \n\n"
+                    + $"*Exapmle:*\n {term.Example}\n\n";
             }
 
-            await telegramBotClient.SendTextMessageAsync(chatId, text);
+            await telegramBotClient.SendTextMessageAsync(chatId, text, parseMode: ParseMode.Markdown);
         }
     }
 }

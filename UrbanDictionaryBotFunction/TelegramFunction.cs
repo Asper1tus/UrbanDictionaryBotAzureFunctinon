@@ -36,7 +36,7 @@ namespace EchoTelegramBot.AzureFunction
             {
                 var message = update.Message;
 
-                await botService.Listen(message);
+                botService.Listen(message);
             }
         }
     }
