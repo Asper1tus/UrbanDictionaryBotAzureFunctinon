@@ -60,10 +60,11 @@ namespace UrbanDictionaryBotFunction.Services
             {
                 text = $"*{term.Word}* by [{term.Author}]({term.AuthorUrl}) \n\n" 
                     + $"*Meaning:*\n {term.Meaning} \n\n"
-                    + $"*Exapmle:*\n {term.Example}\n\n";
+                    + $"*Exapmle:*\n {term.Example}\n\n" 
+                    + $"[Source]({term.SourceUrl})";
             }
 
-            await telegramBotClient.SendTextMessageAsync(chatId, text, parseMode: ParseMode.Markdown);
+            await telegramBotClient.SendTextMessageAsync(chatId, text, parseMode: ParseMode.Markdown, disableWebPagePreview: true);
         }
     }
 }

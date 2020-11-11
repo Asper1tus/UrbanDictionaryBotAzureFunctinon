@@ -15,7 +15,7 @@ namespace UrbanDictionaryBotFunction.Services
 
             var defHeaderNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@class = 'def-panel ']");
 
-            return ParseToTermDefinition(defHeaderNode);
+            return ParseToTermDefinition(defHeaderNode, url);
         }
 
         public List<TermDefinition> GetTermDefinitions(string term)
@@ -29,7 +29,7 @@ namespace UrbanDictionaryBotFunction.Services
 
             foreach(var node in defPanelNodes)
             {
-                termDefinitions.Add(ParseToTermDefinition(node));
+                termDefinitions.Add(ParseToTermDefinition(node, url));
             }
 
             return termDefinitions;
@@ -40,13 +40,15 @@ namespace UrbanDictionaryBotFunction.Services
             var url = "https://www.urbandictionary.com/";
             var htmlDoc = GetHtmlPage(url);
 
-            var liNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='panel trending-words-panel']/ul/li").Take(10);
-
+            var liNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='panel trending-words-panel']/ul/li/a").Take(10);
             var termDefinitions = new List<TermDefinition>();
 
             foreach (var node in liNodes)
             {
-                termDefinitions.Add(ParseToTermDefinition(node));
+                var nodeUrl = "https://www.urbandictionary.com/" + node.Attributes["href"].Value;
+                var nodeHtmlDoc = GetHtmlPage(nodeUrl);
+                var defPanelNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@class = 'def-panel ']");
+                termDefinitions.Add(ParseToTermDefinition(defPanelNode, nodeUrl));
             }
 
             return termDefinitions;
@@ -60,7 +62,7 @@ namespace UrbanDictionaryBotFunction.Services
             return htmlDoc;
         }
 
-        private TermDefinition ParseToTermDefinition(HtmlNode defHeaderNode)
+        private TermDefinition ParseToTermDefinition(HtmlNode defHeaderNode, string url)
         {
             TermDefinition termDefinition = null;
 
@@ -73,7 +75,7 @@ namespace UrbanDictionaryBotFunction.Services
             var author = WebUtility.HtmlDecode(defHeaderNode.SelectSingleNode("//div[@class = 'contributor']/a").InnerText);
             var authorUrl = "https://www.urbandictionary.com" + WebUtility.HtmlDecode(defHeaderNode.SelectSingleNode("//div[@class = 'contributor']/a").Attributes["href"].Value);
 
-            termDefinition = new TermDefinition() { Word = word, Meaning = meaning, Example = example, Author = author, AuthorUrl = authorUrl };
+            termDefinition = new TermDefinition() { Word = word, Meaning = meaning, Example = example, Author = author, AuthorUrl = authorUrl, SourceUrl = url };
 
             return termDefinition;
         }
