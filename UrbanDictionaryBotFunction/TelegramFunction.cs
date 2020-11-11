@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using UrbanDictionaryBotFunction.Services;
 
 namespace EchoTelegramBot.AzureFunction
 {
@@ -34,8 +35,8 @@ namespace EchoTelegramBot.AzureFunction
             var telegramClient = GetTelegramBotClient();
 
             if (update.Type == UpdateType.Message)
-            {   
-                await telegramClient.SendTextMessageAsync(update.Message.Chat, $"Echo : {update.Message.Text}");
+            {
+               
             }
         }
 
