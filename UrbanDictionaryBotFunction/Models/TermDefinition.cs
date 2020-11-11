@@ -9,5 +9,6 @@ namespace UrbanDictionaryBotFunction.Models
         public string Meaning { get; set; }
         public string Example { get; set; }
         public string Author { get; set; }
+        public string AuthorUrl { get; set; }
     }
 }

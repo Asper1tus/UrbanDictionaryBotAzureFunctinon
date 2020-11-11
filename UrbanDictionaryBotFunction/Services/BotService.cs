@@ -58,7 +58,7 @@ namespace UrbanDictionaryBotFunction.Services
             }
             else
             {
-                text = $"*{term.Word}* by {term.Author} \n\n" 
+                text = $"*{term.Word}* by [{term.Author}]({term.AuthorUrl}) \n\n" 
                     + $"*Meaning:*\n {term.Meaning} \n\n"
                     + $"*Exapmle:*\n {term.Example}\n\n";
             }

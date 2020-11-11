@@ -71,8 +71,9 @@ namespace UrbanDictionaryBotFunction.Services
             var meaning = WebUtility.HtmlDecode(defHeaderNode.SelectSingleNode("//div[@class = 'meaning']").InnerText);
             var example = WebUtility.HtmlDecode(defHeaderNode.SelectSingleNode("//div[@class = 'example']").InnerText);
             var author = WebUtility.HtmlDecode(defHeaderNode.SelectSingleNode("//div[@class = 'contributor']/a").InnerText);
+            var authorUrl = "https://www.urbandictionary.com" + WebUtility.HtmlDecode(defHeaderNode.SelectSingleNode("//div[@class = 'contributor']/a").Attributes["href"].Value);
 
-            termDefinition = new TermDefinition() { Word = word, Meaning = meaning, Example = example, Author = author };
+            termDefinition = new TermDefinition() { Word = word, Meaning = meaning, Example = example, Author = author, AuthorUrl = authorUrl };
 
             return termDefinition;
         }
