@@ -12,7 +12,7 @@ namespace UrbanDictionaryBotFunction.Commands
         public override async Task Execute(Message message, TelegramBotClient botClient)
         {
             var chatId = message.Chat.Id;
-            string text = "";
+            string text = "Hello";
 
             await botClient.SendTextMessageAsync(chatId, text);
         }

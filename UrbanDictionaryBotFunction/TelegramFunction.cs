@@ -5,9 +5,9 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using UrbanDictionaryBotFunction.Services;
 
 namespace EchoTelegramBot.AzureFunction
 {
@@ -30,20 +30,14 @@ namespace EchoTelegramBot.AzureFunction
 
         private static async Task HandleUpdate(Update update)
         {
-            var telegramClient = GetTelegramBotClient();
+            BotService botService = new BotService();
 
             if (update.Type == UpdateType.Message)
             {
-               
+                var message = update.Message;
+
+                await botService.Listen(message);
             }
-        }
-
-        private static TelegramBotClient GetTelegramBotClient()
-        {
-            var token = "";
-
-            var telegramClient = new TelegramBotClient(token);
-            return telegramClient;
         }
     }
 }
