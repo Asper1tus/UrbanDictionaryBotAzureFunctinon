@@ -17,12 +17,12 @@ namespace EchoTelegramBot.AzureFunction
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
             HttpRequest request,
             ILogger logger)
+
         {
             logger.LogInformation("Invoke telegram update function");
 
             var body = await request.ReadAsStringAsync();
             var update = JsonConvert.DeserializeObject<Update>(body);
-
 
             BotService botService = new BotService();
             botService.StartListening(update);
