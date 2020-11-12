@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -17,25 +18,28 @@ namespace UrbanDictionaryBotFunction.Services
 
         public BotService()
         {
-            token = "";
+            token = Environment.GetEnvironmentVariable("token", EnvironmentVariableTarget.Process);
             telegramBotClient = new TelegramBotClient(token);
             parserService = new UrbanDictionaryParserService();
 
             commandsList = new List<Command>() {
-                new StartCommand(),
-                new GetTopCommand() 
+                new StartCommand()
             };
         }
 
-        public void Listen(Message message)
+        public void StartListening(Update update)
         {
-            if (commandsList.Any(c => c.Contains(message)))
+            if (update.Type == UpdateType.Message)
             {
-                CommandHandler(message);
-                return;
-            }
+                var message = update.Message;
+                if (commandsList.Any(c => c.Contains(message)))
+                {
+                    CommandHandler(message);
+                    return;
+                }
 
-            TextHandler(message);
+                TextHandler(message);
+            }
         }
 
         private async void CommandHandler(Message message)
@@ -54,7 +58,7 @@ namespace UrbanDictionaryBotFunction.Services
 
             if (term == null)
             {
-                text = "Word not found";
+                text = "Meaning not found";
             }
             else
             {

@@ -6,7 +6,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 using UrbanDictionaryBotFunction.Services;
 
 namespace EchoTelegramBot.AzureFunction
@@ -23,21 +22,12 @@ namespace EchoTelegramBot.AzureFunction
 
             var body = await request.ReadAsStringAsync();
             var update = JsonConvert.DeserializeObject<Update>(body);
-            await HandleUpdate(update);
+
+
+            BotService botService = new BotService();
+            botService.StartListening(update);
 
             return new OkResult();
-        }
-
-        private static async Task HandleUpdate(Update update)
-        {
-            BotService botService = new BotService();
-
-            if (update.Type == UpdateType.Message)
-            {
-                var message = update.Message;
-
-                botService.Listen(message);
-            }
         }
     }
 }

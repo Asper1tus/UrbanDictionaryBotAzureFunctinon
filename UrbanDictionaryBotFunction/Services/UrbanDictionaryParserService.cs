@@ -47,7 +47,7 @@ namespace UrbanDictionaryBotFunction.Services
             {
                 var nodeUrl = "https://www.urbandictionary.com/" + node.Attributes["href"].Value;
                 var nodeHtmlDoc = GetHtmlPage(nodeUrl);
-                var defPanelNode = htmlDoc.DocumentNode.SelectSingleNode("//div[@class = 'def-panel ']");
+                var defPanelNode = nodeHtmlDoc.DocumentNode.SelectSingleNode("//div[@class = 'def-panel ']");
                 termDefinitions.Add(ParseToTermDefinition(defPanelNode, nodeUrl));
             }
 
