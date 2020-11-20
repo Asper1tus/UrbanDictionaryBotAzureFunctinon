@@ -11,10 +11,10 @@ namespace UrbanDictionaryBotFunction.Services
     class BotService
     {
 
-        private string token;
+        private readonly string token;
         private readonly TelegramBotClient telegramBotClient;
-        private List<Command> commandsList;
-        private UrbanDictionaryParserService parserService;
+        private readonly List<Command> commandsList;
+        private readonly UrbanDictionaryParserService parserService;
 
         public BotService()
         {
