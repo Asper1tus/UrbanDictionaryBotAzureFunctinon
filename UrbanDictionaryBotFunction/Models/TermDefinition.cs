@@ -1,7 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
-
-namespace UrbanDictionaryBotFunction.Models
+﻿namespace UrbanDictionaryBotFunction.Models
 {
     class TermDefinition
     {
