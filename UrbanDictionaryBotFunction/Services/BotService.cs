@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -10,7 +11,6 @@ namespace UrbanDictionaryBotFunction.Services
 {
     class BotService
     {
-
         private readonly string token;
         private readonly TelegramBotClient telegramBotClient;
         private readonly List<Command> commandsList;
@@ -22,34 +22,35 @@ namespace UrbanDictionaryBotFunction.Services
             telegramBotClient = new TelegramBotClient(token);
             parserService = new UrbanDictionaryParserService();
 
-            commandsList = new List<Command>() {
+            commandsList = new List<Command>() 
+            {
                 new StartCommand()
             };
         }
 
-        public void StartListening(Update update)
+        public async Task StartListeningAsync(Update update)
         {
             if (update.Type == UpdateType.Message)
             {
                 var message = update.Message;
                 if (commandsList.Any(c => c.Contains(message)))
                 {
-                    CommandHandler(message);
+                    await CommandHandlerAsync(message);
                     return;
                 }
 
-                TextHandler(message);
+                await TextHandler(message);
             }
         }
 
-        private async void CommandHandler(Message message)
+        private async Task CommandHandlerAsync(Message message)
         {
             await commandsList
                 .First(c => c.Contains(message))
                 .Execute(message, telegramBotClient);
         }
 
-        private async void TextHandler(Message message)
+        private async Task TextHandler(Message message)
         {
             var chatId = message.Chat.Id;
             var term = parserService.GetTermDefinition(message.Text);

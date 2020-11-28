@@ -12,6 +12,13 @@ namespace EchoTelegramBot.AzureFunction
 {
     public static class TelegramFunction
     {
+        private static readonly BotService botService;
+
+        static TelegramFunction()
+        {
+            botService = new BotService();
+        }
+
         [FunctionName("Telegram")]
         public static async Task<IActionResult> Update(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
@@ -24,8 +31,7 @@ namespace EchoTelegramBot.AzureFunction
             var body = await request.ReadAsStringAsync();
             var update = JsonConvert.DeserializeObject<Update>(body);
 
-            BotService botService = new BotService();
-            botService.StartListening(update);
+            await botService.StartListeningAsync(update);
 
             return new OkResult();
         }
